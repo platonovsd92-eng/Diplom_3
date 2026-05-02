@@ -1,0 +1,1 @@
+{"uuid": "665e7a46-6603-490e-849e-b7f27bc9d4e4", "children": ["6002ccd2-f91d-411a-8f87-9b6e23f65e8c"], "befores": [{"name": "main_page", "status": "passed", "steps": [{"name": "Открыть главную страницу", "status": "passed", "start": 1777714825207, "stop": 1777714827890}], "start": 1777714825207, "stop": 1777714827891}], "start": 1777714825207, "stop": 1777714873827}
