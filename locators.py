@@ -7,7 +7,6 @@ class MainPageLocators:
     
     # ===== ИНГРЕДИЕНТЫ =====
     FIRST_INGREDIENT = By.XPATH, "(//a[contains(@class, 'BurgerIngredient_ingredient')])[1]"
-    SECOND_INGREDIENT = By.XPATH, "(//a[contains(@class, 'BurgerIngredient_ingredient')])[2]"
     
     # ===== МОДАЛЬНОЕ ОКНО =====
     INGREDIENT_DETAILS_MODAL = By.XPATH, "//div[contains(@class, 'Modal_modal')]"
@@ -28,16 +27,17 @@ class MainPageLocators:
 class FeedPageLocators:
     FEED_TITLE = By.XPATH, "//h1[text()='Лента заказов']"
     
-    # Твои точные локаторы
-    COMPLETED_TOTAL_COUNTER = By.XPATH, "//*[@id='root']/div/main/div/div/div/div[2]/p[2]"
-    COMPLETED_TODAY_COUNTER = By.XPATH, "//*[@id='root']/div/main/div/div/div/div[3]/p[2]"
+    # Надёжные локаторы через текст метки
+    COMPLETED_TOTAL_COUNTER = By.XPATH, "//p[text()='Выполнено за все время:']/following-sibling::p"
+    COMPLETED_TODAY_COUNTER = By.XPATH, "//p[text()='Выполнено за сегодня:']/following-sibling::p"
     
     # Заказы в работе
     ORDERS_IN_PROGRESS = By.XPATH, "//ul[contains(@class, 'OrderFeed_orderListReady')]//li[1]"
 
 
 class LoginPageLocators:
-    EMAIL_INPUT = By.XPATH, "//*[@id='root']/div/main/div/form/fieldset[1]/div/div/input"
-    PASSWORD_INPUT = By.XPATH, "//*[@id='root']/div/main/div/form/fieldset[2]/div/div/input"
-    LOGIN_BUTTON = By.XPATH, "//*[@id='root']/div/main/div/form/button"
+    # На основе присланных атрибутов
+    EMAIL_INPUT = By.CSS_SELECTOR, "input[name='name']"
+    PASSWORD_INPUT = By.CSS_SELECTOR, "input[name='Пароль']"
+    LOGIN_BUTTON = By.CSS_SELECTOR, "button[class*='button_button_type_primary']"
     

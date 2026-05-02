@@ -1,5 +1,6 @@
 import os
 import pytest
+import logging
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
@@ -8,6 +9,9 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from pages.main_page import MainPage
 from api_helpers import register_new_user_and_return_data
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 
 def pytest_addoption(parser):
@@ -30,7 +34,7 @@ def browser(request):
         service = ChromeService(ChromeDriverManager().install())
         driver = webdriver.Chrome(service=service, options=options)
         driver.implicitly_wait(10)
-        print("✅ ChromeDriver инициализирован")
+        logger.info("ChromeDriver инициализирован")
         
     elif browser_name == "firefox":
         current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -43,21 +47,21 @@ def browser(request):
                 f"и поместите в папку drivers/ (создайте папку drivers в корне проекта)"
             )
         
-        print(f"✅ geckodriver найден: {driver_path}")
+        logger.info(f"geckodriver найден: {driver_path}")
         
         options = FirefoxOptions()
         firefox_path = r"C:\Program Files\Mozilla Firefox\firefox.exe"
         if os.path.exists(firefox_path):
             options.binary_location = firefox_path
-            print(f"✅ Firefox найден: {firefox_path}")
+            logger.info(f"Firefox найден: {firefox_path}")
         
         options.add_argument("--width=1920")
         options.add_argument("--height=1080")
         
         service = FirefoxService(driver_path)
         driver = webdriver.Firefox(service=service, options=options)
-        driver.implicitly_wait(15)  # Увеличен таймаут для Firefox
-        print("✅ FirefoxDriver инициализирован")
+        driver.implicitly_wait(15)
+        logger.info("FirefoxDriver инициализирован")
     
     else:
         raise ValueError(f"Неподдерживаемый браузер: {browser_name}. Используйте 'chrome' или 'firefox'")
@@ -65,7 +69,7 @@ def browser(request):
     driver.maximize_window()
     yield driver
     driver.quit()
-    print(f"✅ Браузер закрыт")
+    logger.info("Браузер закрыт")
 
 
 @pytest.fixture(scope="function")

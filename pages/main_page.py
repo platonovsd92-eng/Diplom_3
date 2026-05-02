@@ -1,17 +1,17 @@
 import allure
+import logging
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
 from pages.base_page import BasePage
 from locators import MainPageLocators
 from config import MAIN_PAGE
 import time
 import re
 
-class MainPage(BasePage):
-    def __init__(self, driver):
-        super().__init__(driver)
+logger = logging.getLogger(__name__)
 
+class MainPage(BasePage):
+    
     @allure.step("Открыть главную страницу")
     def open(self):
         self.driver.get(MAIN_PAGE)
@@ -31,13 +31,10 @@ class MainPage(BasePage):
     
     @allure.step("Закрыть модальное окно, если оно открыто")
     def close_modal_if_exists(self):
-        try:
-            close_button = self.driver.find_element(*MainPageLocators.INGREDIENT_DETAILS_CLOSE_BUTTON)
-            if close_button.is_displayed():
-                close_button.click()
+        if self.is_element_displayed(MainPageLocators.INGREDIENT_DETAILS_MODAL):
+            if self.is_element_displayed(MainPageLocators.INGREDIENT_DETAILS_CLOSE_BUTTON):
+                self.click(MainPageLocators.INGREDIENT_DETAILS_CLOSE_BUTTON)
                 time.sleep(0.5)
-        except:
-            pass
 
     @allure.step("Кликнуть на ингредиент")
     def click_ingredient(self):
@@ -65,16 +62,15 @@ class MainPage(BasePage):
                 return int(numbers[0])
             return 0
         except Exception as e:
-            print(f"Ошибка получения счётчика: {e}")
+            logger.error(f"Ошибка получения счётчика: {e}")
             return 0
 
-    @allure.step("Перетащить ингредиент в заказ (Drag-and-Drop) - JavaScript для Firefox")
+    @allure.step("Перетащить ингредиент в заказ (Drag-and-Drop)")
     def drag_and_drop_ingredient_to_basket(self):
         time.sleep(1)
-        ingredient = self.driver.find_element(*MainPageLocators.FIRST_INGREDIENT)
-        target = self.driver.find_element(*MainPageLocators.DROP_TARGET)
+        ingredient = self.find_element(MainPageLocators.FIRST_INGREDIENT)
+        target = self.find_element(MainPageLocators.DROP_TARGET)
         
-        # JavaScript drag-and-drop (работает в Chrome и Firefox)
         js_script = """
         function createEvent(typeOfEvent) {
             var event = document.createEvent("CustomEvent");

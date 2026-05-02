@@ -23,5 +23,5 @@ class LoginPage(BasePage):
     @allure.step("Нажать кнопку Войти")
     def click_login_submit(self):
         self.click(LoginPageLocators.LOGIN_BUTTON)
-        time.sleep(3)  # Увеличено для Firefox
+        time.sleep(3)
         

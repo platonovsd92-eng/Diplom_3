@@ -1,0 +1,8 @@
+[32mINFO    [0m WDM:logger.py:11 ====== WebDriver manager ======
+[32mINFO    [0m WDM:logger.py:11 Get LATEST chromedriver version for google-chrome
+[32mINFO    [0m WDM:logger.py:11 Get LATEST chromedriver version for google-chrome
+[32mINFO    [0m WDM:logger.py:11 Driver [C:\Users\user\.wdm\drivers\chromedriver\win64\147.0.7727.117\chromedriver-win32/chromedriver.exe] found in cache
+[32mINFO    [0m tests.conftest:conftest.py:37 ChromeDriver инициализирован
+[32mINFO    [0m tests.test_ui:test_ui.py:74 Выполнено за всё время ДО: 376957
+[32mINFO    [0m tests.test_ui:test_ui.py:88 Выполнено за всё время ПОСЛЕ: 376958
+[32mINFO    [0m tests.conftest:conftest.py:72 Браузер закрыт
