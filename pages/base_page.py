@@ -72,4 +72,8 @@ class BasePage:
     @allure.step("Найти элемент по локатору (без ожидания)")
     def find_element_now(self, locator):
         return self.driver.find_element(*locator)
+
+    @allure.step("Выполнить JavaScript на странице")
+    def execute_script(self, script, *args):
+        return self.driver.execute_script(script, *args)
     

@@ -26,14 +26,13 @@ class FeedPage(BasePage):
     def wait_for_total_counter_increase(self, expected_value):
         def condition(driver):
             try:
-                element = driver.find_element(*FeedPageLocators.COMPLETED_TOTAL_COUNTER)
+                element = self.find_element(FeedPageLocators.COMPLETED_TOTAL_COUNTER)
                 text = element.text
                 numbers = re.findall(r'\d+', text)
                 current_value = int(numbers[0]) if numbers else 0
                 return current_value > expected_value
             except:
                 return False
-        # Увеличенный таймаут для Firefox (30 секунд)
         wait = WebDriverWait(self.driver, 30)
         wait.until(condition)
 
@@ -41,14 +40,13 @@ class FeedPage(BasePage):
     def wait_for_today_counter_increase(self, expected_value):
         def condition(driver):
             try:
-                element = driver.find_element(*FeedPageLocators.COMPLETED_TODAY_COUNTER)
+                element = self.find_element(FeedPageLocators.COMPLETED_TODAY_COUNTER)
                 text = element.text
                 numbers = re.findall(r'\d+', text)
                 current_value = int(numbers[0]) if numbers else 0
                 return current_value > expected_value
             except:
                 return False
-        # Увеличенный таймаут для Firefox (30 секунд)
         wait = WebDriverWait(self.driver, 30)
         wait.until(condition)
 
@@ -56,7 +54,7 @@ class FeedPage(BasePage):
     def wait_for_order_number_in_progress(self):
         def condition(driver):
             try:
-                element = driver.find_element(*FeedPageLocators.ORDERS_IN_PROGRESS)
+                element = self.find_element(FeedPageLocators.ORDERS_IN_PROGRESS)
                 text = element.text
                 numbers = re.findall(r'\d+', text)
                 return numbers[0] != ""

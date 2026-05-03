@@ -1,9 +1,9 @@
 import allure
-import time
 import pytest
 import logging
 from pages.feed_page import FeedPage
 from pages.main_page import MainPage
+from pages.login_page import LoginPage
 
 logger = logging.getLogger(__name__)
 
@@ -15,30 +15,24 @@ class TestMainFunctionality:
     @allure.title("Переход по клику на «Конструктор»")
     def test_constructor_click(self, main_page):
         main_page.click_order_feed()
-        time.sleep(2)
         main_page.click_constructor()
-        time.sleep(2)
         assert "feed" not in main_page.get_current_url()
 
     @allure.title("Переход по клику на «Лента заказов»")
     def test_feed_click(self, main_page):
         main_page.click_order_feed()
-        time.sleep(2)
         assert "feed" in main_page.get_current_url()
 
     @allure.title("Клик на ингредиент → появляется всплывающее окно с деталями")
     def test_ingredient_modal_opens(self, main_page):
         main_page.click_ingredient()
-        time.sleep(2)
         assert main_page.is_ingredient_modal_visible()
 
     @allure.title("Всплывающее окно закрывается кликом по крестику")
     def test_modal_closes_by_cross(self, main_page):
         main_page.click_ingredient()
-        time.sleep(2)
         assert main_page.is_ingredient_modal_visible()
         main_page.close_ingredient_modal()
-        time.sleep(2)
         assert not main_page.is_ingredient_modal_visible()
 
     @allure.title("При добавлении ингредиента в заказ счётчик увеличивается (Drag-and-Drop)")
@@ -47,7 +41,6 @@ class TestMainFunctionality:
         logger.info(f"Начальный счётчик: {initial_counter}")
         
         main_page.drag_and_drop_ingredient_to_basket()
-        time.sleep(3)
         
         new_counter = main_page.get_ingredient_counter()
         logger.info(f"Новый счётчик: {new_counter}")
@@ -64,25 +57,24 @@ class TestOrderFeed:
     def test_total_completed_orders_increases(self, main_page, browser, created_user):
         assert created_user, "Пользователь не создан через API"
         
-        main_page.login(created_user["email"], created_user["password"])
-        time.sleep(3)
+        # Авторизация (вынесена в тест из MainPage)
+        main_page.open()
+        main_page.click_login_button_on_main()
+        login_page = LoginPage(browser)
+        login_page.enter_email(created_user["email"])
+        login_page.enter_password(created_user["password"])
+        login_page.click_login_submit()
         
         main_page.click_order_feed()
-        time.sleep(3)
         feed_page = FeedPage(browser)
         total_before = feed_page.get_total_completed_orders()
         logger.info(f"Выполнено за всё время ДО: {total_before}")
         
         main_page.click_constructor()
-        time.sleep(2)
         main_page.drag_and_drop_ingredient_to_basket()
-        time.sleep(2)
         main_page.place_order()
-        time.sleep(4)
         
         main_page.click_order_feed()
-        time.sleep(3)
-        
         feed_page.wait_for_total_counter_increase(total_before)
         total_after = feed_page.get_total_completed_orders()
         logger.info(f"Выполнено за всё время ПОСЛЕ: {total_after}")
@@ -94,25 +86,24 @@ class TestOrderFeed:
     def test_today_completed_orders_increases(self, main_page, browser, created_user):
         assert created_user, "Пользователь не создан через API"
         
-        main_page.login(created_user["email"], created_user["password"])
-        time.sleep(3)
+        # Авторизация (вынесена в тест из MainPage)
+        main_page.open()
+        main_page.click_login_button_on_main()
+        login_page = LoginPage(browser)
+        login_page.enter_email(created_user["email"])
+        login_page.enter_password(created_user["password"])
+        login_page.click_login_submit()
         
         main_page.click_order_feed()
-        time.sleep(3)
         feed_page = FeedPage(browser)
         today_before = feed_page.get_today_completed_orders()
         logger.info(f"Выполнено за сегодня ДО: {today_before}")
         
         main_page.click_constructor()
-        time.sleep(2)
         main_page.drag_and_drop_ingredient_to_basket()
-        time.sleep(2)
         main_page.place_order()
-        time.sleep(4)
         
         main_page.click_order_feed()
-        time.sleep(3)
-        
         feed_page.wait_for_today_counter_increase(today_before)
         today_after = feed_page.get_today_completed_orders()
         logger.info(f"Выполнено за сегодня ПОСЛЕ: {today_after}")
@@ -124,16 +115,18 @@ class TestOrderFeed:
     def test_order_number_appears_in_progress(self, main_page, browser, created_user):
         assert created_user, "Пользователь не создан через API"
         
-        main_page.login(created_user["email"], created_user["password"])
-        time.sleep(3)
+        # Авторизация (вынесена в тест из MainPage)
+        main_page.open()
+        main_page.click_login_button_on_main()
+        login_page = LoginPage(browser)
+        login_page.enter_email(created_user["email"])
+        login_page.enter_password(created_user["password"])
+        login_page.click_login_submit()
         
         main_page.drag_and_drop_ingredient_to_basket()
-        time.sleep(2)
         main_page.place_order()
-        time.sleep(4)
         
         main_page.click_order_feed()
-        time.sleep(4)
         feed_page = FeedPage(browser)
         
         feed_page.wait_for_order_number_in_progress()

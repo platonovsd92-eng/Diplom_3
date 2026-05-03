@@ -1,0 +1,6 @@
+[32mINFO    [0m tests.conftest:conftest.py:50 geckodriver найден: C:\Проекты VS Code\Diplom\Diplom_3\tests\..\drivers\geckodriver.exe
+[32mINFO    [0m tests.conftest:conftest.py:56 Firefox найден: C:\Program Files\Mozilla Firefox\firefox.exe
+[32mINFO    [0m tests.conftest:conftest.py:64 FirefoxDriver инициализирован
+[32mINFO    [0m tests.test_ui:test_ui.py:100 Выполнено за сегодня ДО: 219
+[32mINFO    [0m tests.test_ui:test_ui.py:109 Выполнено за сегодня ПОСЛЕ: 220
+[32mINFO    [0m tests.conftest:conftest.py:72 Браузер закрыт
